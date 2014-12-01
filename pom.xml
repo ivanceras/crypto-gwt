@@ -9,109 +9,7 @@
 	<version>1.0</version>
 
 	<description>Provides cryptographic operations for the Google Web Toolkit</description>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<configuration>
-					<extraJvmArgs>-Dgwt.args=help -Xmx512M</extraJvmArgs>
-					<logLevel>DEBUG</logLevel>
-					<style>DETAILED</style>
-					<testSkip>${skipTests}</testSkip>
-					<testTimeOut>0</testTimeOut>
-					<style>DETAILED</style>
-				</configuration>
-				<executions>
-					<execution>
-						<id>gwt-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<gen>${project.build.directory}/generated-classes</gen>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4.3</version>
-				<configuration>
-					<excludes>
-						<exclude>**/GwtTest*.java</exclude>
-					</excludes>
-					<forkedProcessTimeoutInSeconds>0</forkedProcessTimeoutInSeconds>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<configuration>
-							<tasks>
-								<replace token="com.googlecode.cryptogwt.emul." value=""
-									dir="target/classes">
-									<include name="**/*.java" />
-								</replace>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.java</include>
-				</includes>
-			</resource>
-		</resources>
-		<extensions>
-			<extension>
-				<groupId>org.jvnet.wagon-svn</groupId>
-				<artifactId>wagon-svn</artifactId>
-				<version>1.9</version>
-			</extension>
-		</extensions>
-	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -145,8 +43,83 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.java</include>
+					<include>**/*.gwt.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<artifactId>gwt-maven-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<extraJvmArgs>-Dgwt.args=help -Xmx512M</extraJvmArgs> -->
+<!-- 					<logLevel>DEBUG</logLevel> -->
+<!-- 					<style>DETAILED</style> -->
+<!-- 					<testSkip>${skipTests}</testSkip> -->
+<!-- 					<testTimeOut>0</testTimeOut> -->
+<!-- 					<style>DETAILED</style> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>gwt-test</id> -->
+<!-- 						<phase>test</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>test</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<gen>${project.build.directory}/generated-classes</gen> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 	<properties>
-		<gwtVersion>1.7.1</gwtVersion>
+		<gwtVersion>2.7.0</gwtVersion>
 	</properties>
 	<repositories>
 		<repository>
@@ -160,18 +133,4 @@
 			<url>http://gwt-async-future.googlecode.com/svn/repo</url>
 		</repository>
 	</repositories>
-	<distributionManagement>
-		<repository>
-			<name>Maven Repository for Crypto GWT</name>
-			<uniqueVersion>false</uniqueVersion>
-			<id>googlecode</id>
-			<url>svn:https://crypto-gwt.googlecode.com/svn/repo</url>
-		</repository>
-		<snapshotRepository>
-			<name>Maven Repository for Crypto GWT (snapshots)</name>
-			<uniqueVersion>false</uniqueVersion>
-			<id>googlecode</id>
-			<url>svn:https://crypto-gwt.googlecode.com/svn/repo</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
